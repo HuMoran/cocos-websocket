@@ -114,13 +114,13 @@ class ReWebSocket {
       console.debug('ReWebSocket', 'attempt-connect', this.url);
     }
 
-    // const localWs = ws;
     const timeout = setTimeout(() => {
       if (this.debug) {
         console.debug('ReWebSocket', 'connection-timeout', this.url);
       }
       this.timedOut = true;
       this.close();
+      // this.refresh();
       this.timedOut = false;
     }, this.timeoutInterval);
 
