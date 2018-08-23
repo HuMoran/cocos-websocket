@@ -120,6 +120,8 @@ class ReWebSocket {
       }
       this.timedOut = true;
       this.close();
+      // when creating a WebSocket timeout, if you don't want to close websocket,
+      // you can use this.refresh() instead of this.close()
       // this.refresh();
       this.timedOut = false;
     }, this.timeoutInterval);
