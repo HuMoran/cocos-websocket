@@ -8,7 +8,7 @@ ws.onopen = () => {
   console.log('websocket open');
   ws.send('hello server');
 };
-ws.opclose = () => {
+ws.onclose = () => {
   console.log('websocket closed');
 };
 ws.onmessage = (event) => {
