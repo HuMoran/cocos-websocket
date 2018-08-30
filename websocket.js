@@ -1,11 +1,11 @@
 /**
  * File: websocket.js
- * Project: Script
+ * Project: cocos-websocket
  * Created Date: Tuesday, August 21st 2018, 10:19:37 pm
- * Author: Tao Hu htax2013@gmail.com
+ * Author: HuMoran htax2013@gmail.com
  * -----
  * Last Modified: Thu Aug 23 2018
- * Modified By: Tao Hu
+ * Modified By: HuMoran
  * -----
  */
 
@@ -32,6 +32,8 @@ class ReWebSocket {
     this.maxReconnectAttempts = options.maxReconnectAttempts || null;
     /** The binary type, possible values 'blob' or 'arraybuffer', default 'blob'. */
     this.binaryType = options.binaryType || 'blob';
+    /** Reconnect failed or connect timeout, callback function */
+    this.closesCb = options.closeCb || null;
     /**
      * The current state of the connection.
      * Can be one of: WebSocket.CONNECTING, WebSocket.OPEN, WebSocket.CLOSING, WebSocket.CLOSED
@@ -103,6 +105,9 @@ class ReWebSocket {
 
     if (reconnectAttempt) {
       if (this.maxReconnectAttempts && this.reconnectAttempts > this.maxReconnectAttempts) {
+        if (typeof this.closeCb === 'function') {
+          this.closeCb();
+        }
         return;
       }
     } else {
@@ -121,9 +126,12 @@ class ReWebSocket {
       this.timedOut = true;
       this.close();
       // when creating a WebSocket timeout, if you don't want to close websocket,
-      // you can use this.refresh() instead of this.close()
+      // you can use this.refresh instead of this.close (recommend this.close)
       // this.refresh();
       this.timedOut = false;
+      if (typeof this.closeCb === 'function') {
+        this.closeCb();
+      }
     }, this.timeoutInterval);
 
     this.ws.onopen = (event) => {
