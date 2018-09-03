@@ -144,7 +144,7 @@ class ReWebSocket {
       this.reconnectAttempts = 0;
       const e = ReWebSocket.generateEvent('open');
       e.isReconnect = reconnectAttempt;
-      this.reconnectAttempt = false;
+      reconnectAttempt = false;
       this.eventTarget.dispatchEvent(e);
     };
 
